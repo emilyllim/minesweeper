@@ -23,7 +23,7 @@ class MineWindow(QMainWindow):
 		# Set widget to the vertical layout
 		widget.setLayout(layoutV)
 		# Create grid
-		grid = QGridLayout()
+		gridLayout = QGridLayout()
 
 		# Holds references to the buttons
 		self.buttons = []
@@ -31,6 +31,9 @@ class MineWindow(QMainWindow):
 		# 100 buttons are created
 		for i in range(100):
 			button = QPushButton()
+			button.setText(" ")
+			font = QFont("Arial", 30, QFont.Bold)
+			button.setFont(font)
 			# Tells which button was clicked
 			button.clicked.connect(self.buttonClicked)
 			# These buttons are added to the buttons list
@@ -42,22 +45,23 @@ class MineWindow(QMainWindow):
 			button.setProperty("myRow", row)
 			button.setProperty("myCol", col)
 			# Each button is added to the grid
-			grid.addWidget(self.buttons[i], row, col)
+			gridLayout.addWidget(self.buttons[i], row, col)
 		# Add grid to the vertical layout
-		layoutV.addLayout(grid)
+		layoutV.addLayout(gridLayout)
 
 		# Model that keeps track of the actual game
-		#self.model = MineModel()
+		self.model = MineModel()
 		# Call the code to start a new game
-		#self.newGame()
+		self.newGame()
 
 
-	# def newGame(self):
-	# 	print("New game!");
-	# 	for button in self.buttons:
-	# 		button.setEnabled(true)
-
-	# 	self.model.newGame()
+	def newGame(self):
+		print("New game!");
+		# Set all buttons to true
+		for button in self.buttons:
+			button.setEnabled(True)
+		# Model generates a new game
+		self.model.newGame()
 
 
 	def buttonClicked(self):
@@ -66,10 +70,21 @@ class MineWindow(QMainWindow):
 		# Row and col and equal to the row and col button clicked is in
 		row = clicked.property("myRow")
 		col = clicked.property("myCol")
+
+		uncover = str(self.model.reveal(row, col))
+		if uncover == 'X':
+			clicked.setStyleSheet("background-color : red")
+		else:
+			clicked.setStyleSheet("background-color : blue")
+
+		# Button clicked now shows a bomb or how many bombs are adjacent
+		clicked.setText(uncover)
+		
 		# Print the result
 		print(f"Row {row} and column {col} was clicked!")
 
+		# Button can't be clicked anymore
+		clicked.setEnabled(False)
 
-# rows =
-# cols =
-# grid = [[0]*(cols) for i in range(rows)]
+		# Tell model of which button was clicked
+		# self.model.reveal(row, col)
