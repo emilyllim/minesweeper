@@ -101,7 +101,7 @@ class MineModel:
 							if self.grid[row][col-1] == 'X':
 								adj+=1
 						elif row == rows-1: # Columns between 0 and 9 and last row
-							if self.grid[row-1][row-1] == 'X':
+							if self.grid[row-1][col-1] == 'X':
 								adj+=1
 							if self.grid[row-1][col] == 'X':
 								adj+=1

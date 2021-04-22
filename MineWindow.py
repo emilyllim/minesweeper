@@ -115,7 +115,7 @@ class MineWindow(QMainWindow):
 		# Set bomb label to 10
 		self.label.setText("Bombs: 10")
 		# Reset moves label
-		self.moveLabel.setText("Moves made: " + str(self.moveCount))
+		self.moveLabel.setText("Moves Made: " + str(self.moveCount))
 		# Model generates a new game
 		self.model.newGame()
 
@@ -131,7 +131,7 @@ class MineWindow(QMainWindow):
 		if self.flagButton.property("on") == False:
 			# Increment move counter
 			self.moveCount += 1
-			self.moveLabel.setText("Moves made: " + str(self.moveCount))
+			self.moveLabel.setText("Moves Made: " + str(self.moveCount))
 			# Get the contents of the square
 			square = str(self.model.getSquare(row, col))
 			# If there's a bomb in the square
@@ -186,8 +186,16 @@ class MineWindow(QMainWindow):
 			# Set button green and set on property to be true
 			self.flagButton.setStyleSheet("background-color : green")
 			self.flagButton.setProperty("on", True)
+			# When flag mode is on, enable all buttons that are flagged
+			for button in self.buttons:
+				if button.property("color") == "green":
+					button.setEnabled(True)
 		# Else, flag mode is now off
 		else:
 			# Set button gray and set on property to be false
 			self.flagButton.setStyleSheet("background-color : light gray")
 			self.flagButton.setProperty("on", False)
+			# When flag mode is off, disable all buttons that are flagged
+			for button in self.buttons:
+				if button.property("color") == "green":
+					button.setEnabled(False)
