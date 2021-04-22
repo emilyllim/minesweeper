@@ -129,9 +129,6 @@ class MineWindow(QMainWindow):
 
 		# If flag mode is not on
 		if self.flagButton.property("on") == False:
-			# Increment move counter
-			self.moveCount += 1
-			self.moveLabel.setText("Moves Made: " + str(self.moveCount))
 			# Get the contents of the square
 			square = str(self.model.getSquare(row, col))
 			# If there's a bomb in the square
@@ -152,6 +149,10 @@ class MineWindow(QMainWindow):
 					button.setEnabled(False)
 				self.flagButton.setEnabled(False)
 				self.flagButton.setStyleSheet("background-color : light gray")
+			else:
+				# Increment move counter
+				self.moveCount += 1
+				self.moveLabel.setText("Moves Made: " + str(self.moveCount))
 
 			# If all buttons that aren't bombs have been clicked, game is won
 			if self.model.getGameState(self.moveCount, row, col) == 1:
